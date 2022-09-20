@@ -1,0 +1,65 @@
+url: '10.128.196.184'
+port: '3000'
+methods:
+  get_async:
+    type: 'post'
+    async: true
+    res-type: 'json'
+    path: '/invokeChaincode/json'
+    save: './res'
+    params:
+      function: 'get'
+      peer: 0
+      org: 1
+  set_async:
+    type: 'post'
+    async: true
+    res-type: 'json'
+    path: '/invokeChaincode/json'
+    save: './res'
+    params:
+      function: 'set'
+      peer: 0
+      org: 1
+  get:
+    type: 'post'
+    async: false
+    res-type: 'json'
+    path: '/invokeChaincode/json'
+    save: './res'
+    params:
+      function: 'get'
+      peer: 0
+      org: 1
+  set:
+    type: 'post'
+    async: false
+    res-type: 'json'
+    path: '/invokeChaincode/json'
+    save: './res'
+    params:
+      function: 'set'
+      peer: 0
+      org: 1
+
+  get_file:
+    type: 'post'
+    async: false
+    res-type: 'binary'
+    path: '/invokeChaincode/file'
+    save: './res'
+    params:
+      function: 'get'
+      peer: 0
+      org: 1
+  set_file:
+    type: 'post'
+    async: false
+    res-type: 'binary'
+    path: '/invokeChaincode/file'
+    save: './res'
+    params:
+      function: 'set'
+      peer: 0
+      org: 1
+

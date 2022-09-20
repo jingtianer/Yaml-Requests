@@ -48,13 +48,13 @@ method_name:
 from configLoader import init
 def callBack(ret):
     print("callBack: " + ret)
-
-print("invoke: %s" % init("./sample_config.yaml").get({"key":"a", "val":"bb"}))
-print("invoke: %s" % init("./sample_config.yaml").set({"key":"a", "val":"bb"}))
-print("invoke: %s" % init("./sample_config.yaml").get({"key":"a", "val":"bb"}))
-print("invoke: %s" % init("./sample_config.yaml").get_async({"key":"a", "val":"cc"}, callBack))
-print("invoke: %s" % init("./sample_config.yaml").set_async({"key":"a", "val":"cc"}, callBack))
-print("invoke: %s" % init("./sample_config.yaml").get_async({"key":"a", "val":"cc"}, callBack))
+methods = init("./sample_config.yaml")
+print("invoke: %s" % methods.get({"key":"a", "val":"bb"}))
+print("invoke: %s" % methods.set({"key":"a", "val":"bb"}))
+print("invoke: %s" % methods.get({"key":"a", "val":"bb"}))
+print("invoke: %s" % methods.get_async({"key":"a", "val":"cc"}, callBack))
+print("invoke: %s" % methods.set_async({"key":"a", "val":"cc"}, callBack))
+print("invoke: %s" % methods.get_async({"key":"a", "val":"cc"}, callBack))
 ```
 
 # 应用场景

@@ -41,3 +41,21 @@ method_name:
 - path: 请求的path
 - save: （可选）保存请求返回体的文件
 - params: 请求的固定参数
+
+## 调用
+- 以调用`sample_config.yaml`中的函数为例
+```python
+from configLoader import init
+def callBack(ret):
+    print("callBack: " + ret)
+
+print("invoke: %s" % init("./sample_config.yaml").get({"key":"a", "val":"bb"}))
+print("invoke: %s" % init("./sample_config.yaml").set({"key":"a", "val":"bb"}))
+print("invoke: %s" % init("./sample_config.yaml").get({"key":"a", "val":"bb"}))
+print("invoke: %s" % init("./sample_config.yaml").get_async({"key":"a", "val":"cc"}, callBack))
+print("invoke: %s" % init("./sample_config.yaml").set_async({"key":"a", "val":"cc"}, callBack))
+print("invoke: %s" % init("./sample_config.yaml").get_async({"key":"a", "val":"cc"}, callBack))
+```
+
+# 应用场景
+1. 配合docker容器，不同容器使用同一套代码，根据不同的配置文件，进行不同参数的http请求

@@ -1,5 +1,5 @@
 from utils.yamlUtils import read_yaml, get_value, set_value, has_value
-from methodCreator import genMethods, genConfigParas
+from methodCreator import Methods, genConfigParas
 
 var_list = ['url', 'port', 'methods']
 
@@ -14,5 +14,4 @@ def init(yamlfile):
     methods = get_value('methods', data)
     check_yaml(data)
     genConfigParas(data)
-    method = genMethods(methods)
-    return method
+    return Methods(methods)

@@ -1,7 +1,6 @@
 import requests
 from contentType import ContentType
 
-import asyncio
 def basePost(baseUrl:str, port:str, path:str, body, params:dict, resType:ContentType):
     url = "http://" + baseUrl + ":" + port + path
     response = requests.post(url, data=body, params=params)

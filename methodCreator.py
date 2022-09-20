@@ -2,12 +2,25 @@ from baseFunc import *
 from contentType import ContentType
 import json
 from asyncExecutor import exeTask, exeTaskAsync
+import logging
 creator = locals()
+
+var_list = ['path', 'type', 'res-type', 'async']
+def checkMethod(method_para):
+    for key in var_list:
+        if key not in method_para:
+            return False
+    return True
 
 class Methods():
     def __init__(self, methods):
         for method_name, method_para in methods.items():
-            setattr(self,method_name, genMethod(method_para))
+            logging.info("generating method: %s" % method_name)
+            if checkMethod(method_para):
+                setattr(self,method_name, genMethod(method_para))
+            else:
+                logging.error("params check: %s not match the params check" % method_name)
+        logging.info("method generation completed!")
 
 def genMethod(method_para):
     path = method_para['path']

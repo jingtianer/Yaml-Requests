@@ -1,6 +1,6 @@
 from utils.yamlUtils import read_yaml, get_value, set_value, has_value
 from methodCreator import Methods, genConfigParas
-
+import logging
 var_list = ['url', 'port', 'methods']
 
 def check_yaml(data):
@@ -10,6 +10,7 @@ def check_yaml(data):
 
 
 def init(yamlfile):
+    logging.basicConfig(format='%(asctime)s ***%(message)s', level=logging.INFO)
     data = read_yaml(yamlfile)
     methods = get_value('methods', data)
     check_yaml(data)

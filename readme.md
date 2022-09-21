@@ -28,7 +28,7 @@ method_name:
     async: true
     res-type: 'json'
     path: '/invokeChaincode/json'
-    save: './xxx/xxx'
+    save: './path/to/file'
     params:
         param1: 'val1'
         param2: 'val2'
@@ -46,8 +46,8 @@ method_name:
 - res-type: 返回值类型，可选`text/json/binary`
 - path: 请求的path
 - save: （可选）保存请求返回体的文件
-- params: 请求参数，（实际调用时的params优先，yaml中的params可以看作请求参数的缺省值）
-- body: 请求的body
+- params: （可选）请求参数，（实际调用时的params优先，yaml中的params可以看作请求参数的缺省值）
+- body: （可选）请求的body
 
 ## body的定义
 ```yaml
@@ -62,7 +62,7 @@ method_name:
 ```yaml
     body:
         content-type: 'text'
-        content: 'string'
+        content: 'hello world'
 ```
 
 ```yaml

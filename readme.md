@@ -30,9 +30,15 @@ method_name:
     path: '/invokeChaincode/json'
     save: './xxx/xxx'
     params:
-        para1: 'val1'
-        para2: 'val2'
-        para3: 'val3'
+        param1: 'val1'
+        param2: 'val2'
+        param3: 'val3'
+    body:
+        content-type: 'json/binary/text'
+        content:
+            xxx: 'xxx'
+            xxx: 'xxx'
+            xxx: 'xxx'
 ```
 
 - type: 表示接口方法类型，可选`post/get`
@@ -40,21 +46,46 @@ method_name:
 - res-type: 返回值类型，可选`text/json/binary`
 - path: 请求的path
 - save: （可选）保存请求返回体的文件
-- params: 请求的固定参数，（实际调用时的params优先，yaml中的params可以看作请求参数的缺省值）
+- params: 请求参数，（实际调用时的params优先，yaml中的params可以看作请求参数的缺省值）
+- body: 请求的body
 
+## body的定义
+```yaml
+    body:
+        content-type: 'json'
+        content:
+            xxx: 'xxx'
+            xxx: 'xxx'
+            xxx: 'xxx'
+```
+
+```yaml
+    body:
+        content-type: 'text'
+        content: 'string'
+```
+
+```yaml
+    body:
+        content-type: 'binary'
+        files:
+            file1: 'path/to/file1/file1'
+            file2: 'path/to/file2/file2'
+            file3: 'path/to/file3/file3'
+```
 ## 调用
 - 以调用`sample_config.yaml`中的函数为例
 ```python
 from configLoader import init
-def callBack(ret):
-    print("callBack: " + ret)
+def callBack(ret, x):
+    print("callBack %s : %s" % (x, ret))
 methods = init("./sample_config.yaml")
-print("invoke: %s" % methods.get({"key":"a", "val":"bb"}))
-print("invoke: %s" % methods.set({"key":"a", "val":"bb"}))
-print("invoke: %s" % methods.get({"key":"a", "val":"bb"}))
-print("invoke: %s" % methods.get_async({"key":"a", "val":"cc"}, callBack))
-print("invoke: %s" % methods.set_async({"key":"a", "val":"cc"}, callBack))
-print("invoke: %s" % methods.get_async({"key":"a", "val":"cc"}, callBack))
+print("invoke: %s" % methods.get(None, {"key":"a"}))
+print("invoke: %s" % methods.set(None, {"key":"a", "val":"cc"}))
+print("invoke: %s" % methods.get(None, {"key":"a"}))
+print("invoke: %s" % methods.get_async(None, {"key":"a"}, lambda ret: callBack(ret, 'get_async1')))
+print("invoke: %s" % methods.set_async(None, {"key":"a", "val":"bb"}, lambda ret: callBack(ret, 'get_async2')))
+print("invoke: %s" % methods.get_async(None, {"key":"a"}, lambda ret: callBack(ret, 'get_async3')))
 ```
 
 # 应用场景

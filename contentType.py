@@ -1,5 +1,8 @@
 from enum import Enum
 class ContentType(Enum):
-    Json = 1
-    Binary = 2
-    Text = 3
+    Json = 'json'
+    Binary = 'binary'
+    Text = 'text'
+
+def getContentType(value):
+    return ContentType._value2member_map_[value]

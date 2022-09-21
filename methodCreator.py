@@ -1,5 +1,5 @@
 from baseFunc import *
-from contentType import ContentType
+from contentType import ContentType, getContentType
 import json
 from asyncExecutor import exeTask, exeTaskAsync
 import logging
@@ -25,9 +25,9 @@ class Methods():
 def genMethod(method_para):
     path = method_para['path']
     resType = method_para['res-type']
-    yaml_params = method_para['params']
+    yaml_params = method_para['params'] if 'params' in method_para else {}
     save = method_para['save'] if 'save' in method_para else None
-    contentType = ContentType.Json if resType == "json" else ContentType.Binary if resType == "binary" else ContentType.Text if resType == "text" else None
+    contentType = getContentType(resType)
     if method_para['async']:
         return genAsyncMethod(method_para, path, yaml_params, save, contentType)
     else :
@@ -41,37 +41,68 @@ def genConfigParas(data):
 
 def genAsyncMethod(method_para, path, yaml_params, save, contentType):
     if method_para['type'] == "post":
-        return lambda body, callBack: exeTaskAsync(lambda :genPost(body, path, yaml_params, contentType, save), callBack)
+        return lambda  req_params, body, callBack: exeTaskAsync(lambda :gen(method_para, req_params, body, path, yaml_params, contentType, save), callBack)
     elif method_para['type'] == "get":
-        return lambda req_params, body, callBack: exeTaskAsync(lambda :genGet(req_params, body, path, yaml_params, contentType, save), callBack)
+        return lambda req_params, body, callBack: exeTaskAsync(lambda :gen(method_para, req_params, body, path, yaml_params, contentType, save), callBack)
     else :
         raise Exception("No Such type" + method_para['type'])
 
 
 def genSyncMethod(method_para, path, yaml_params, save, contentType):
     if method_para['type'] == "post":
-        return lambda body: exeTask(lambda :genPost(body, path, yaml_params, contentType, save))
+        return lambda req_params, body: exeTask(lambda :gen(method_para, req_params, body, path, yaml_params, contentType, save))
     elif method_para['type'] == "get":
-        return lambda req_params, body: exeTask(lambda :genGet(req_params, body, path, yaml_params, contentType, save))
+        return lambda req_params, body: exeTask(lambda :gen(method_para, req_params, body, path, yaml_params, contentType, save))
     else :
         raise Exception("No Such type" + method_para['type'])
 
-async def genGet(req_params, body, path, yaml_params, contentType, save):
-    yaml_params.update(req_params)
+async def gen(method_para, req_params, body, path, yaml_params, contentType, save):
+    if req_params is not None:
+        yaml_params.update(req_params)
     req_params = yaml_params
-    res = baseGet(url, port, path, body, req_params, contentType)
+    if 'body' in method_para:
+        body_config = method_para['body']
+        body,contentType = handle_body_config(body_config, body)
+    if method_para['type'] == "post":
+        res = basePost(url, port, path, body, None,req_params, contentType)
+    elif method_para['type'] == "get":
+        res = baseGet(url, port, path, body, None, req_params, contentType)
+    else :
+        raise Exception("No Such type" + method_para['type'])
     saveFile(save, res)
     return res
 
-async def genPost(body, path, yaml_params, contentType, save):
-    yaml_params.update(body)
-    body = yaml_params
-    res = basePost(url, port, path, json.dumps(body), None, contentType)
-    saveFile(save, res)
-    return res
+def handle_body_config(body_config, body):
+    contentType = getContentType(body_config['content-type'])
+    if contentType == ContentType.Text:
+        if body is None:
+            body = ''
+        body = body_config['content']
+    elif contentType == ContentType.Json:
+        if body is None:
+            body = {}
+        if not isinstance(body, dict):
+            raise Exception("josn body has to be a dict")
+        yaml_body = body_config['content']
+        body.update(yaml_body)
+        body = json.dumps(body)
+    elif contentType == ContentType.Binary:
+        if body is None:
+            body = {}
+        if 'files' not in body_config:
+            raise Exception("binary body has to indecate the path to file")
+        files = readFiles(body_config['files'])
+        files.update(readFiles(body))
+        body = files
+    else:
+        raise Exception("content-type %s not supported!" % contentType)
+    return body,contentType
 
 def saveFile(save, res):
     if save is not None:
-        with open(save, 'w') as f:
+        with open(save, 'wb') as f:
             f.write(res)
     
+def readFiles(files):
+    return {file_name:open(file, "rb") for file_name,file in files.items()}
+

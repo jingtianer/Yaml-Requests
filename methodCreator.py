@@ -57,13 +57,15 @@ def genSyncMethod(method_para, path, yaml_params, save, contentType):
         raise Exception("No Such type" + method_para['type'])
 
 async def genGet(req_params, body, path, yaml_params, contentType, save):
-    req_params.update(yaml_params)
+    yaml_params.update(req_params)
+    req_params = yaml_params
     res = baseGet(url, port, path, body, req_params, contentType)
     saveFile(save, res)
     return res
 
 async def genPost(body, path, yaml_params, contentType, save):
-    body.update(yaml_params)
+    yaml_params.update(body)
+    body = yaml_params
     res = basePost(url, port, path, json.dumps(body), None, contentType)
     saveFile(save, res)
     return res

@@ -40,7 +40,7 @@ method_name:
 - res-type: 返回值类型，可选`text/json/binary`
 - path: 请求的path
 - save: （可选）保存请求返回体的文件
-- params: 请求的固定参数
+- params: 请求的固定参数，（实际调用时的params优先，yaml中的params可以看作请求参数的缺省值）
 
 ## 调用
 - 以调用`sample_config.yaml`中的函数为例

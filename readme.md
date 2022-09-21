@@ -86,6 +86,10 @@ print("invoke: %s" % methods.get(None, {"key":"a"}))
 print("invoke: %s" % methods.get_async(None, {"key":"a"}, lambda ret: callBack(ret, 'get_async1')))
 print("invoke: %s" % methods.set_async(None, {"key":"a", "val":"bb"}, lambda ret: callBack(ret, 'get_async2')))
 print("invoke: %s" % methods.get_async(None, {"key":"a"}, lambda ret: callBack(ret, 'get_async3')))
+
+print("invoke: %s" % methods.get_file({'key':'a'}, {"sample_config.yaml":"./sample_config.yaml"}))
+print("invoke: %s" % methods.set_file({'key':'a'}, {"sample_config.yaml":"./sample_config.yaml"}))
+print("invoke: %s" % methods.get_file({'key':'a'}, {"sample_config.yaml":"./sample_config.yaml"}))
 ```
 
 # 应用场景

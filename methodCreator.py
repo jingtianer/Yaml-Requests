@@ -62,11 +62,11 @@ async def gen(method_para, req_params, body, path, yaml_params, contentType, sav
     req_params = yaml_params
     if 'body' in method_para:
         body_config = method_para['body']
-        body,contentType = handle_body_config(body_config, body)
+        body,files = handle_body_config(body_config, body)
     if method_para['type'] == "post":
-        res = basePost(url, port, path, body, None,req_params, contentType)
+        res = basePost(url, port, path, body, files,req_params, contentType)
     elif method_para['type'] == "get":
-        res = baseGet(url, port, path, body, None, req_params, contentType)
+        res = baseGet(url, port, path, body, files, req_params, contentType)
     else :
         raise Exception("No Such type" + method_para['type'])
     saveFile(save, res)
@@ -78,6 +78,7 @@ def handle_body_config(body_config, body):
         if body is None:
             body = ''
         body = body_config['content']
+        return body, None
     elif contentType == ContentType.Json:
         if body is None:
             body = {}
@@ -86,6 +87,7 @@ def handle_body_config(body_config, body):
         yaml_body = body_config['content']
         body.update(yaml_body)
         body = json.dumps(body)
+        return body, None
     elif contentType == ContentType.Binary:
         if body is None:
             body = {}
@@ -93,11 +95,10 @@ def handle_body_config(body_config, body):
             raise Exception("binary body has to indecate the path to file")
         files = readFiles(body_config['files'])
         files.update(readFiles(body))
-        body = files
+        return None, files
     else:
         raise Exception("content-type %s not supported!" % contentType)
-    return body,contentType
-
+    return None, None
 def saveFile(save, res):
     if save is not None:
         with open(save, 'wb') as f:

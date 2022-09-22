@@ -1,5 +1,4 @@
 url: '10.128.196.184'
-# url: '10.128.196.184'
 port: '3000'
 methods:
   get_async:
@@ -56,7 +55,6 @@ methods:
     async: false
     res-type: 'binary'
     path: '/invokeChaincode/files'
-    save: './res'
     params:
       function: 'setFile'
       peer: 0

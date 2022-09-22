@@ -50,6 +50,7 @@ method_name:
 - body: （可选）请求的body
 
 ## body的定义
+- 定义1
 ```yaml
     body:
         content-type: 'json'
@@ -58,13 +59,13 @@ method_name:
             xxx: 'xxx'
             xxx: 'xxx'
 ```
-
+- 定义2
 ```yaml
     body:
         content-type: 'text'
         content: 'hello world'
 ```
-
+- 定义3
 ```yaml
     body:
         content-type: 'binary'
@@ -87,9 +88,9 @@ print("invoke: %s" % methods.get_async(None, {"key":"a"}, lambda ret: callBack(r
 print("invoke: %s" % methods.set_async(None, {"key":"a", "val":"bb"}, lambda ret: callBack(ret, 'get_async2')))
 print("invoke: %s" % methods.get_async(None, {"key":"a"}, lambda ret: callBack(ret, 'get_async3')))
 
-print("invoke: %s" % methods.get_file({'key':'a'}, {"sample_config.yaml":"./sample_config.yaml"}))
+print("invoke: %s" % methods.get_file({'key':'a'}, None))
 print("invoke: %s" % methods.set_file({'key':'a'}, {"sample_config.yaml":"./sample_config.yaml"}))
-print("invoke: %s" % methods.get_file({'key':'a'}, {"sample_config.yaml":"./sample_config.yaml"}))
+print("invoke: %s" % methods.get_file({'key':'a'}, None))
 ```
 
 # 应用场景

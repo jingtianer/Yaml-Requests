@@ -95,3 +95,5 @@ print("invoke: %s" % methods.get_file({'key':'a'}, None))
 
 # 应用场景
 1. 配合docker容器，不同容器使用同一套代码，根据不同的配置文件，进行不同参数的http请求
+2. 作为requests库的封装，便于网络请求
+3. 可以减少对fedml库代码的修改，减少bug的产生

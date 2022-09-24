@@ -79,3 +79,13 @@ methods:
         res: "./test.py"
       
 
+  QueryAllReceived:
+    type: 'post'
+    async: false
+    res-type: 'json'
+    path: '/invokeChaincode/QueryAllReceived'
+    params:
+      peer: 0
+      org: 1
+    body:
+      content-type: 'json'

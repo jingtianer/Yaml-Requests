@@ -77,24 +77,26 @@ def handle_body_config(body_config, body):
     if contentType == ContentType.Text:
         if body is None:
             body = ''
-        body = body_config['content']
+        if 'content' in body_config:
+            body = body_config['content']
         return body, None
     elif contentType == ContentType.Json:
         if body is None:
             body = {}
         if not isinstance(body, dict):
             raise Exception("josn body has to be a dict")
-        yaml_body = body_config['content']
-        body.update(yaml_body)
+        if 'content' in body_config:
+            yaml_body = body_config['content']
+            body.update(yaml_body)
         body = json.dumps(body)
         return body, None
     elif contentType == ContentType.Binary:
         if body is None:
             body = {}
-        if 'files' not in body_config:
-            raise Exception("binary body has to indecate the path to file")
-        files = readFiles(body_config['files'])
-        files.update(readFiles(body))
+        files = None
+        if 'files' in body_config:
+            files = readFiles(body_config['files'])
+            files.update(readFiles(body))
         return None, files
     else:
         raise Exception("content-type %s not supported!" % contentType)

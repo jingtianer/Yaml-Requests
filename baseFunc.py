@@ -1,5 +1,5 @@
 import requests
-from contentType import ContentType
+from .contentType import ContentType
 
 def basePost(baseUrl:str, port:str, path:str, body, files:dict, params:dict, resType:ContentType):
     url = "http://" + baseUrl + ":" + port + path

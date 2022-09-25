@@ -1,7 +1,7 @@
-from baseFunc import *
-from contentType import ContentType, getContentType
+from .baseFunc import *
+from .contentType import ContentType, getContentType
 import json
-from asyncExecutor import exeTask, exeTaskAsync
+from .asyncExecutor import exeTask, exeTaskAsync
 import logging
 creator = locals()
 

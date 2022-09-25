@@ -1,5 +1,5 @@
-from utils.yamlUtils import read_yaml, get_value, set_value, has_value
-from methodCreator import Methods, genConfigParas
+from .utils.yamlUtils import read_yaml, get_value, set_value, has_value
+from .methodCreator import Methods, genConfigParas
 import logging
 var_list = ['url', 'port', 'methods']
 
